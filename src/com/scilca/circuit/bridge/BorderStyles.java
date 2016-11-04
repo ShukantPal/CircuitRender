@@ -12,6 +12,6 @@ package com.scilca.circuit.bridge;
 public enum BorderStyles {
     
     DOTTED, DASHED, SOLID, DOUBLE, GROOVE,
-    RIGDE, INSET, OUTSET, NONE, HIDDEN
+    RIGDE, INSET, OUTSET, NONE, HIDDEN, 
     
 }

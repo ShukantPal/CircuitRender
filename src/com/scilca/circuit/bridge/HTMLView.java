@@ -15,4 +15,10 @@ public abstract class HTMLView extends JComponent{
     
     HTMLView parentView;
     
+    ViewBorder viewBorder;
+    
+    
+    
+    
+    
 }
