@@ -12,25 +12,13 @@ import javax.swing.JComponent;
  *
  * @author Sukant Pal
  */
-public abstract class View extends JComponent{
+public interface View{
     
     public static final short BUTTON_VIEW = 0x1;
     public static final short CONTAINER_VIEW = 0x2;
     
-    ViewBorder viewBorder;
-    short viewType;
+    public void paintComponent(Graphics g);
     
-    View(short viewType){
-        
-    }
-    
-    @Override
-    public abstract void paintComponent(
-            Graphics g
-    );
-    
-    public short getViewType(){
-        return viewType;
-    }
+    public short getViewType();
     
 }

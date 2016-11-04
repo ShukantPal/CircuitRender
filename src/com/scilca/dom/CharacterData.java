@@ -84,7 +84,7 @@ public abstract class CharacterData extends Node implements org.w3c.dom.Characte
                 characterData = insertRange(characterData, shortForm, oldPos);
             }
         }
-        System.out.println(characterData);
+
         return characterData;
     }
     

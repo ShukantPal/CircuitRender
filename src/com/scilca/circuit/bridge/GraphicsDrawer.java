@@ -5,7 +5,9 @@
  */
 package com.scilca.circuit.bridge;
 
+import com.scilca.dom.html.HTMLButtonElement;
 import com.scilca.dom.html.HTMLDocument;
+import java.awt.GridLayout;
 import org.w3c.dom.html.HTMLElement;
 import javax.swing.JPanel;
 import org.w3c.dom.Node;
@@ -24,11 +26,11 @@ public final class GraphicsDrawer {
         switch(DOMElement.getTagName()){
             case "button":
                 ButtonView buttonView = new ButtonView();
-                GUITree.internalLayout.addLayoutComponent("button", buttonView);
+                GUITree.add(ButtonView.getButtonView((HTMLButtonElement) DOMElement));
                 break;
             case "div":
                 ContainerView divView = new ContainerView();
-                GUITree.internalLayout.addLayoutComponent("div", divView);
+                GUITree.add(divView);
                 break;
         }
         
@@ -42,6 +44,7 @@ public final class GraphicsDrawer {
     
     static ContainerView getGraphicsTree(HTMLDocument DOMTree){
         ContainerView renderView = new ContainerView();
+        System.out.println(DOMTree.getBody());
         
         HTMLElement bodyElement = DOMTree.getBody();
         for(Node childNode 
@@ -58,10 +61,15 @@ public final class GraphicsDrawer {
         this.renderScreen = renderScreen;
         this.DOMTree = DOMTree;
         this.GUITree = getGraphicsTree(DOMTree);
+        
+        GridLayout singleLayout = new GridLayout();
+        renderScreen.setLayout(singleLayout);
+        renderScreen.add(GUITree);
     }
     
     public void paintTree(){
-        
+        GUITree.setVisible(true);
+        GUITree.repaint();
     }
     
 }

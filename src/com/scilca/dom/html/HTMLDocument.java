@@ -32,7 +32,7 @@ public class HTMLDocument extends com.scilca.dom.Document implements org.w3c.dom
     com.scilca.dom.html.HTMLHtmlElement htmlElement;
     
     com.scilca.dom.html.HTMLHeadElement headElement;
-    com.scilca.dom.html.HTMLElement bodyElement;
+    com.scilca.dom.html.HTMLBodyElement bodyElement;
     
     double HtmlVersion;
     
@@ -80,8 +80,15 @@ public class HTMLDocument extends com.scilca.dom.Document implements org.w3c.dom
     
     @Override
     public String getTitle() {
-        return htmlAttrs.getNamedItem("title") != null ?
-                htmlAttrs.getNamedItem("title").getNodeValue() : "";
+        if(headElement != null)
+            for(Node childNode : headElement.getChildNodes()){
+                if(childNode.getNodeType() == Node.ELEMENT_NODE 
+                        && childNode.getNodeName().equals("title")){
+                    HTMLTitleElement titleForm = (HTMLTitleElement) childNode;
+                    return titleForm.getTitle();
+                }
+            }
+        return null;
     }
 
     @Override
@@ -105,6 +112,14 @@ public class HTMLDocument extends com.scilca.dom.Document implements org.w3c.dom
     public String getURL() {
         return super.getDocumentURI();
     }
+    
+    public HTMLElement getHead() {
+        return headElement;
+    }
+    
+    public void setHead(HTMLElement head) {
+        headElement = (com.scilca.dom.html.HTMLHeadElement) head;
+    }
 
     @Override
     public HTMLElement getBody() {
@@ -113,7 +128,7 @@ public class HTMLDocument extends com.scilca.dom.Document implements org.w3c.dom
 
     @Override
     public void setBody(HTMLElement body) {
-        bodyElement = (com.scilca.dom.html.HTMLElement) body;
+        bodyElement = (com.scilca.dom.html.HTMLBodyElement) body;
     }
     
     public HTMLElement getHTMLElement(){

@@ -6,6 +6,9 @@
 package com.scilca.circuit.parser;
 
 import com.scilca.circuit.states.HTMLStates;
+import com.scilca.dom.html.HTMLBodyElement;
+import com.scilca.dom.html.HTMLDocument;
+import com.scilca.dom.html.HTMLElement;
 
 /**
  *
@@ -14,33 +17,42 @@ import com.scilca.circuit.states.HTMLStates;
 public final class HTMLStateManager {
    
     HTMLStates currentState;
+    TreeBuilder DOMBuilder;
     
-    HTMLStateManager(HTMLStates initState){
+    HTMLStateManager(HTMLStates initState, TreeBuilder DOMBuilder){
         currentState = initState;
+        this.DOMBuilder = DOMBuilder;
     }
     
-    public static HTMLStateManager getManager(){
-        return new HTMLStateManager(HTMLStates.INITIAL);
+    public static HTMLStateManager getManager(TreeBuilder DOMBuilder){
+        return new HTMLStateManager(HTMLStates.INITIAL, DOMBuilder);
     }
     
-    public void switchOnAddElement(String tagName){
+    public void switchOnAddElement(HTMLElement foundElement){
         switch(currentState){
             case INITIAL:
             case BEFORE_HTML:
-                if(tagName.equals("html"))
+                if(foundElement.getTagName().equals("html"))
                     currentState = HTMLStates.BEFORE_HEAD;
                 break;
             case BEFORE_HEAD:
-                if(tagName.equals("head"))
+                if(foundElement.getTagName().equals("head")){
                     currentState = HTMLStates.IN_HEAD;
+                    ((HTMLDocument) DOMBuilder.getDocument())
+                            .setHead(foundElement);
+                }
                 break;
             case IN_HEAD:
-                if(tagName.equals("noscript"))
+                if(foundElement.getTagName().equals("noscript"))
                     currentState = HTMLStates.IN_HEAD_NOSCRIPT;
                 break;
             case AFTER_HEAD:
-                if(tagName.equals("body"))
+                if(foundElement.getTagName().equals("body")){
                     currentState = HTMLStates.IN_BODY;
+                    ((HTMLDocument) DOMBuilder.getDocument())
+                            .setBody((HTMLBodyElement) foundElement);
+                    System.out.println("found " + foundElement);
+                }
                 break;
         }
     }

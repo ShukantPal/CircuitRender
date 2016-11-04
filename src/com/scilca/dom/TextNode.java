@@ -79,7 +79,6 @@ public class TextNode extends CharacterData implements org.w3c.dom.Text{
             
             org.w3c.dom.Node currentNode;
             while(siblingNodes.item(selfIndex--).getNodeType() != Node.TEXT_NODE);
-            System.out.println(selfIndex);
             
             selfIndex += 2;
             

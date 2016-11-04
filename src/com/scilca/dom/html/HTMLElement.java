@@ -18,6 +18,7 @@ package com.scilca.dom.html;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Node;
 
 /**
  *
@@ -122,6 +123,16 @@ public class HTMLElement extends com.scilca.dom.Element implements org.w3c.dom.h
     @Override
     public void setClassName(String className) {
         setAttr("class", className);
+    }
+    
+    public String getButtonText(){
+        String buttonText = new String();
+        for(Node childNode : (com.scilca.dom.NodeList) getChildNodes()){
+            if(childNode.getNodeType() == Node.TEXT_NODE){
+                buttonText += childNode.getNodeValue();
+            }
+        }
+        return buttonText;
     }
     
     @Override

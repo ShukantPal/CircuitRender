@@ -16,7 +16,7 @@ import org.w3c.dom.Text;
  * @param <T> - The Elements to add to the DOM tree
  * @param <E> - The DOM document to build.
  */
-public class TreeBuilder<T extends Element, E extends Document> {
+public final class TreeBuilder<T extends Element, E extends Document> {
     
     E treeDoc;
     ArrayList<T> stackOfOpenElements;

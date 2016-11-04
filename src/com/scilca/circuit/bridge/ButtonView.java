@@ -5,23 +5,42 @@
  */
 package com.scilca.circuit.bridge;
 
-import java.awt.Color;
+import com.scilca.dom.html.HTMLButtonElement;
+import java.awt.Font;
 import java.awt.Graphics;
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
 
 /**
  *
  * @author Sukant Pal
  */
-public class ButtonView extends View{
+public class ButtonView extends JButton implements View{
     
-    protected ButtonView(){
-        super((short) BUTTON_VIEW);
+    public static final int DEFAULT_WIDTH = 100;
+    public static final int DEFAULT_HEIGHT = 200;
+    public static final Font DEFAULT_FONT = Font.getFont("verdana");
+    
+    public static ButtonView getButtonView(HTMLButtonElement loadedElement){
+        ButtonView initButton = new ButtonView();
+        initButton.setText(loadedElement.getButtonText());
+        return initButton;
+    }
+    
+    public ButtonView(){
+        super.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        super.setVisible(true);
     }
     
     @Override
     public void paintComponent(Graphics g){
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, 0, super.getWidth(), super.getHeight());
+        g.setFont(DEFAULT_FONT);
+        super.paintComponent(g);
+    }
+    
+    @Override
+    public short getViewType(){
+        return BUTTON_VIEW;
     }
     
 }

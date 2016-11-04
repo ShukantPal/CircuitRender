@@ -7,30 +7,34 @@ package com.scilca.circuit.bridge;
 
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.LayoutManager;
 import javax.swing.JPanel;
 
 /**
  *
  * @author Sukant Pal
  */
-public final class ContainerView extends View{
-
-    public FlowLayout internalLayout;
-    JPanel internalPane;
+public final class ContainerView extends JPanel implements View{
+   
+    LayoutManager currentManager;
     
     public ContainerView() {
-        super((short) CONTAINER_VIEW);
-        this.internalLayout = new FlowLayout();
-        this.internalPane = new JPanel();
-       
-        this.internalPane.setLayout(internalLayout);
+        super();
+        currentManager = new FlowLayout();
+    }
+
+    @Override
+    public short getViewType() {
+        return CONTAINER_VIEW;
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        this.internalPane.paintComponents(g);
+        super.paintComponent(g);
     }
     
-    
+    public LayoutManager getLayoutManager(){
+        return currentManager;
+    }
     
 }

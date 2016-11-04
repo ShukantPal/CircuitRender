@@ -35,7 +35,7 @@ public class HTMLParser extends AbstractParser{
     public HTMLParser(CharacterReader inputSource) {
         super(inputSource);
         DOMBuilder = new TreeBuilder(HTMLDocument.getDocument(inputSource.toString()));
-        DOMState = HTMLStateManager.getManager();
+        DOMState = HTMLStateManager.getManager(DOMBuilder);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class HTMLParser extends AbstractParser{
                     if(foundElement.getTagName().equals("html"))
                         DOMBuilder.addElement(foundElement, autoClose);
                 
-                DOMState.switchOnAddElement(foundElement.getTagName());
+                DOMState.switchOnAddElement(foundElement);
                 
                 return foundElement;
             case "</":
@@ -132,6 +132,8 @@ public class HTMLParser extends AbstractParser{
                     DOMBuilder.addElement(lineBreak, true);
                 }
                 
+                DOMState.closeElement(inputTokensier.currentToken());
+                
                 DOMBuilder.closeElementsTill(inputTokensier.currentToken());
                 if(!inputTokensier.nextToken().equals(">"))
                     switch(inputTokensier.currentToken()){
@@ -143,7 +145,7 @@ public class HTMLParser extends AbstractParser{
                         default:
                             throw new UnknownError("Close Tag Not Closed");
                     }
-                    
+                
                 return constructElement();
             case "<!":  
                 if(inputTokensier.nextToken() != null){
