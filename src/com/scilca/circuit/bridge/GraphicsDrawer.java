@@ -7,7 +7,16 @@ package com.scilca.circuit.bridge;
 
 import com.scilca.dom.html.HTMLButtonElement;
 import com.scilca.dom.html.HTMLDocument;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.LayoutManager;
+import java.util.logging.Logger;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import org.w3c.dom.html.HTMLElement;
 import javax.swing.JPanel;
 import org.w3c.dom.Node;
@@ -20,31 +29,43 @@ public final class GraphicsDrawer {
     
     JPanel renderScreen;
     HTMLDocument DOMTree;
-    ContainerView GUITree;
+    JPanel GUITree;
     
-    static void addToTree(ContainerView GUITree, HTMLElement DOMElement){
+    static void addToTree(JComponent GUITree, HTMLElement DOMElement){
+        JComponent jComp = null;
+        GUITree.setLayout(new FlowLayout());
+        
         switch(DOMElement.getTagName()){
             case "button":
-                ButtonView buttonView = new ButtonView();
-                GUITree.add(ButtonView.getButtonView((HTMLButtonElement) DOMElement));
+                JButton jButton = ComponentLoader.getButton((HTMLButtonElement) DOMElement);
+                GUITree.add(jButton);
+                jComp = jButton;
                 break;
             case "div":
-                ContainerView divView = new ContainerView();
-                GUITree.add(divView);
+                JPanel section = new JPanel();
+                section.setLayout(new GridLayout());
+                GUITree.add(section);
+                jComp = section;
+                break;
+            case "form":
+                JPanel sectionForm = new JPanel();
+                sectionForm.setLayout(new GridLayout());
+                GUITree.add(sectionForm);
+                jComp = sectionForm;
                 break;
         }
         
-        for(Node childNode 
-                : (com.scilca.dom.NodeList) DOMElement.getChildNodes()){
-            if(childNode.getNodeType() == Node.ELEMENT_NODE){
-                addToTree(GUITree, (HTMLElement) childNode);
+        if(jComp != null)
+            for(Node childNode 
+                    : (com.scilca.dom.NodeList) DOMElement.getChildNodes()){
+                if(childNode.getNodeType() == Node.ELEMENT_NODE){
+                    addToTree(jComp, (HTMLElement) childNode);
+                }
             }
-        }
     }
     
-    static ContainerView getGraphicsTree(HTMLDocument DOMTree){
-        ContainerView renderView = new ContainerView();
-        System.out.println(DOMTree.getBody());
+    static JPanel getGraphicsTree(HTMLDocument DOMTree){
+        JPanel renderView = new JPanel();
         
         HTMLElement bodyElement = DOMTree.getBody();
         for(Node childNode 

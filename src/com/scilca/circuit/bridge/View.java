@@ -6,7 +6,6 @@
 package com.scilca.circuit.bridge;
 
 import java.awt.Graphics;
-import javax.swing.JComponent;
 
 /**
  *
@@ -16,6 +15,7 @@ public interface View{
     
     public static final short BUTTON_VIEW = 0x1;
     public static final short CONTAINER_VIEW = 0x2;
+    public static final short TEXT_VIEW = 0x5;
     
     public void paintComponent(Graphics g);
     

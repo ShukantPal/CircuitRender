@@ -21,7 +21,7 @@ public class ButtonView extends JButton implements View{
     public static final int DEFAULT_HEIGHT = 200;
     public static final Font DEFAULT_FONT = Font.getFont("verdana");
     
-    public static ButtonView getButtonView(HTMLButtonElement loadedElement){
+    public static JButton getButtonView(HTMLButtonElement loadedElement){
         ButtonView initButton = new ButtonView();
         initButton.setText(loadedElement.getButtonText());
         return initButton;
